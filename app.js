@@ -9,6 +9,7 @@ const xss = require("xss-clean");
 const hpp = require("hpp");
 const cookieParser = require("cookie-parser");
 const compression = require("compression");
+const cors = require("cors");
 
 const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controllers/errorController");
@@ -29,6 +30,21 @@ app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
 
 // 1) GLOBAL Middlewares
+// Implement CORS (enabling cross-origin resource sharing, to allow API to be called from outside the api)
+// only works on simple requests (get, post)
+app.use(cors());
+// Access-Control-Allow-Origin *
+
+// Example: the backend on:api.natours.com, and front-end on natours.com, we then allow only our front-end to access
+// app.use(
+//   cors({
+//     origin: "https://www.natours.com",
+//   })
+// );
+// HTTP method sent by the browser for non-simple requests to deal with cors, so in here * refers to all routes
+app.options("*", cors());
+// app.options("/api/v1/tours/:id", cors());
+
 // Serving static files
 app.use(express.static(path.join(__dirname, "public")));
 
