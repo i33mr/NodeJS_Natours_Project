@@ -11,7 +11,7 @@ const signToken = (id) =>
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
 
-const createAndSendToken = (user, statusCode, res) => {
+const createAndSendToken = (user, statusCode, req, res) => {
   const token = signToken(user._id);
   const cookieOptions = {
     expires: new Date(
@@ -20,7 +20,11 @@ const createAndSendToken = (user, statusCode, res) => {
     // secure: true,
     httpOnly: true,
   };
-  if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
+  // change the if statement since not all deployed applications are automatically set to https
+  // if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
+  // in express, we have a secure property on the request, but it doesn't work with heroku, so we need to check also for
+  if (req.secure || req.headers["x-forwarded-proto"] === "https")
+    cookieOptions.secure = true;
 
   res.cookie("jwt", token, cookieOptions);
 
@@ -53,7 +57,7 @@ exports.signup = catchAsync(async (req, res, next) => {
   const url = `${req.protocol}://${req.get("host")}/me`;
   // console.log(url);
   await new Email(newUser, url).sendWelcome();
-  createAndSendToken(newUser, 201, res);
+  createAndSendToken(newUser, 201, req, res);
 });
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -73,7 +77,7 @@ exports.login = catchAsync(async (req, res, next) => {
     return next(new AppError("Email or password are incorrect", 401));
   }
   // 3) if everything is ok, send token to client
-  createAndSendToken(user, 200, res);
+  createAndSendToken(user, 200, req, res);
 
   // const token = signToken(user._id);
 
@@ -251,7 +255,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   // 3) Update changePasswordAt property for the user (in userModel, document middleware)
 
   // 4) Log the user in, send JWT
-  createAndSendToken(user, 200, res);
+  createAndSendToken(user, 200, req, res);
 
   // const token = signToken(user._id);
 
@@ -283,7 +287,7 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   user.passwordConfirm = req.body.passwordConfirm;
   await user.save();
   // 4) log user in, send JWT.
-  createAndSendToken(user, 200, res);
+  createAndSendToken(user, 200, req, res);
 
   // const token = signToken(user._id);
   // res.status(200).json({

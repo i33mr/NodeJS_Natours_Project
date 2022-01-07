@@ -44,6 +44,15 @@ process.on("unhandledRejection", (err) => {
   });
 });
 
+// Sick term is an event that emitted by heroku to restart the app every 24h
+// So we need to respond to it. (like the unhandled rejection above)
+process.on("SIGTERM", () => {
+  console.log("SIGTERM RECEIVED. Shutting down gracefully!");
+  server.close(() => {
+    console.log("Process terminated");
+  });
+});
+
 // TESTING MODELS
 // const testTour = new Tour({
 //   name: "The Park Camper",

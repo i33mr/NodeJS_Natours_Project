@@ -21,6 +21,8 @@ const viewRouter = require("./routes/viewRoutes");
 // Start express app
 const app = express();
 
+app.enable("trust proxy");
+
 // View engine
 app.set("view engine", "pug");
 // using path to avoid using slashes
