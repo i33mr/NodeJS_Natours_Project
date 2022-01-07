@@ -43,21 +43,21 @@ const reviewSchema = new mongoose.Schema(
 reviewSchema.index({ tour: 1, user: 1 }, { unique: true });
 
 // QUERY MIDDLEWARE
-// reviewSchema.pre(/^find/, function (next) {
-//   // this.populate({
-//   //   path: "tour",
-//   //   select: "-guides name", // explicitly removing the guides because they were populated in the tour model
-//   // }).populate({
-//   //   path: "user",
-//   //   select: "name photo",
-//   // });
-//   // Removed the tour populating since it creates populate chain which affects the performance, and it is not even reasonable to have in the first place
-//   this.populate({
-//     path: "user",
-//     select: "name photo",
-//   });
-//   next();
-// });
+reviewSchema.pre(/^find/, function (next) {
+  // this.populate({
+  //   path: "tour",
+  //   select: "-guides name", // explicitly removing the guides because they were populated in the tour model
+  // }).populate({
+  //   path: "user",
+  //   select: "name photo",
+  // });
+  // Removed the tour populating since it creates populate chain which affects the performance, and it is not even reasonable to have in the first place
+  this.populate({
+    path: "user",
+    select: "name photo",
+  });
+  next();
+});
 
 reviewSchema.statics.calcAverageRatings = async function (tourId) {
   // console.log(tourId);
