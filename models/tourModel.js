@@ -165,13 +165,13 @@ tourSchema.pre(/^find/, function (next) {
   next();
 });
 
-tourSchema.post(/^find/, function (docs, next) {
-  // this.find({ secretTour: { $ne: true } });
-  console.log(`Tour Query took ${Date.now() - this.start} milliseconds`);
-  // console.log(docs);
+// tourSchema.post(/^find/, function (docs, next) {
+//   // this.find({ secretTour: { $ne: true } });
+//   console.log(`Tour Query took ${Date.now() - this.start} milliseconds`);
+//   // console.log(docs);
 
-  next();
-});
+//   next();
+// });
 
 tourSchema.pre(/^find/, function (next) {
   // populate: replace the fields we referenced with the actual related data. guides here = Users

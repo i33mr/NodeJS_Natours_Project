@@ -8,6 +8,7 @@ const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 const hpp = require("hpp");
 const cookieParser = require("cookie-parser");
+const compression = require("compression");
 
 const AppError = require("./utils/appError");
 const globalErrorHandler = require("./controllers/errorController");
@@ -17,6 +18,7 @@ const reviewRouter = require("./routes/reviewRoutes");
 const bookingRouter = require("./routes/bookingRoutes");
 const viewRouter = require("./routes/viewRoutes");
 
+// Start express app
 const app = express();
 
 // View engine
@@ -148,6 +150,9 @@ app.use(
 //   console.log("Hello from the middleware!");
 //   next();
 // });
+
+// A compression middleware to compress text responses sent to the client
+app.use(compression());
 
 // Testing middleware
 app.use((req, res, next) => {

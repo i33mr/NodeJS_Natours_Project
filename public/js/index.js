@@ -26,7 +26,7 @@ if (loginForm) {
   loginForm.addEventListener("submit", (e) => {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
-    console.log(email, password);
+    // console.log(email, password);
 
     e.preventDefault();
     login(email, password);
@@ -95,7 +95,7 @@ if (bookBtn) {
   bookBtn.addEventListener("click", async (e) => {
     e.target.textContent = "Processing...";
     const { tourId } = e.target.dataset;
-    console.log(tourId);
+    // console.log(tourId);
     await bookTour(tourId);
     // e.target.textContent = "Processing...";
   });
