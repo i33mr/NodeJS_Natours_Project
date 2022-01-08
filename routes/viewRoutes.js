@@ -7,6 +7,10 @@ const authController = require("../controllers/authController");
 
 const router = express.Router();
 
+// A middleware function that runs for each request that is coming to this router (the website).
+// it will check if there is an alert query, and set it on response.locals to be used by the pug templates
+router.use(viewController.alerts);
+
 // router.get("/", (req, res) => {
 //   res.status(200).render("base", {
 //     tour: "The Forest Hiker",

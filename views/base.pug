@@ -13,7 +13,7 @@ html
       )
       title Natours | #{ title }
 
-  body 
+  body(data-alert=`${alert ? alert:""}`)
     // header
     include _header
     // CONTENT

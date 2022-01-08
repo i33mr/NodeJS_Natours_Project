@@ -8,6 +8,7 @@ import { login, logout } from "./login";
 import { updateSettings } from "./updateSettings";
 import { displayMap } from "./mapbox";
 import { bookTour } from "./stripe";
+import { showAlert } from "./alerts";
 
 // DOM ELEMENTS
 const mapbox = document.getElementById("map");
@@ -100,3 +101,6 @@ if (bookBtn) {
     // e.target.textContent = "Processing...";
   });
 }
+
+const alertMessage = document.querySelector("body").dataset.alert;
+if (alertMessage) showAlert("success", alertMessage, 20);
