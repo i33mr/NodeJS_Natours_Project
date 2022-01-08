@@ -3,7 +3,7 @@ const viewController = require("../controllers/viewController");
 const authController = require("../controllers/authController");
 
 // temp
-const bookingController = require("../controllers/bookingController");
+// const bookingController = require("../controllers/bookingController");
 
 const router = express.Router();
 
@@ -28,7 +28,7 @@ router.use(authController.isLoggedIn);
 
 router.get(
   "/",
-  bookingController.createBookingCheckout, //Temporary, everyone can make bookings without paying
+  // bookingController.createBookingCheckout, //Temporary, everyone can make bookings without paying
   viewController.getOverview
 );
 router.get("/tour/:slug", viewController.getTour);

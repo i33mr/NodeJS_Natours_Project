@@ -17,6 +17,7 @@ const tourRouter = require("./routes/tourRoutes");
 const userRouter = require("./routes/userRoutes");
 const reviewRouter = require("./routes/reviewRoutes");
 const bookingRouter = require("./routes/bookingRoutes");
+const bookingController = require("./controllers/bookingController");
 const viewRouter = require("./routes/viewRoutes");
 
 // Start express app
@@ -130,6 +131,13 @@ const limiter = rateLimit({
 });
 
 app.use("/api", limiter);
+
+// Why define it here instead of in the booking router? because the stripe function that will read the body needs the body in a raw form (not in JSON)
+app.post(
+  "/webhook-checkout",
+  express.raw({ type: "application/json" }),
+  bookingController.webhookCheckout
+);
 
 // Body parser, reading data from the body into req.body. For security measures, req.body is limited here to 10 kilobytes
 app.use(
